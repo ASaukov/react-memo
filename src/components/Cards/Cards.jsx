@@ -71,6 +71,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setTries(3);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -84,7 +85,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
-  
+
   const openCard = clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -129,7 +130,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    
 
     if (playerLost) {
       if (isEasyMode) {
@@ -143,9 +143,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               return [...accum, card];
             }, []),
           );
-        });
+        }, 1000);
       }
-      finishGame(STATUS_LOST);
+      if (!isEasyMode || tries === 1) finishGame(STATUS_LOST);
       return;
     }
 
