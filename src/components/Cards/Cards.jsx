@@ -152,7 +152,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               }
               return [...accum, card];
             }, []),
-          )
+          );
         }, 1000);
       }
       if (!isEasyMode || tries === 1) finishGame(STATUS_LOST);
