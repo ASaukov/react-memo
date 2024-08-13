@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
+import { useEasyContext } from "../../context/useContext";
 
 export function SelectLevelPage() {
-  return (
+  const {isEasyMode, setEasyMode} = useEasyContext();
+  
+  return ( 
     <div className={styles.container}>
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
@@ -23,6 +26,10 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        <div className={styles.modeSelection}>
+        <label className={styles.nameMode}>Легкий режим</label>
+        <input type="checkbox" checked={isEasyMode} onChange={e => setEasyMode(e.target.checked)}/>
+        </div>
       </div>
     </div>
   );

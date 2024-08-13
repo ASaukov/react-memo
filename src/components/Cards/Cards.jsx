@@ -5,6 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useEasyContext } from "../../context/useContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,6 +42,8 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { isEasyMode } = useEasyContext();
+  const [tries, setTries] = useState(3);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -69,6 +72,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setTries(3);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -82,6 +86,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
+
   const openCard = clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -126,8 +131,31 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+
     if (playerLost) {
-      finishGame(STATUS_LOST);
+      if (isEasyMode) {
+        setTries(tries - 1);
+        setTimeout(() => {
+          setCards(
+            cards.reduce((accum, card) => {
+              if (card.id === clickedCard.id) {
+                return [...accum, { ...card, open: false }];
+              }
+              return [...accum, card];
+            }, []),
+          );
+          setCards(
+            cards.reduce((accum, card) => {
+              const firstCard = openCardsWithoutPair.find(el => el.id !== clickedCard.id);
+              if (card.id === firstCard.id) {
+                return [...accum, { ...card, open: false }];
+              }
+              return [...accum, card];
+            }, []),
+          );
+        }, 1000);
+      }
+      if (!isEasyMode || tries === 1) finishGame(STATUS_LOST);
       return;
     }
 
@@ -196,6 +224,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {isEasyMode ? <span className={styles.quantity}>Количество попыток: {tries}</span> : ""}
       </div>
 
       <div className={styles.cards}>
