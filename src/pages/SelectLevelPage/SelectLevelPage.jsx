@@ -35,7 +35,7 @@ export function SelectLevelPage() {
         </label>
         </div>
         <Button >Играть</Button>
-        <Link className={styles.toLeaderboard}>Перейти к лидерборду</Link>
+        <Link className={styles.toLeaderboard} to="/leaderboard">Перейти к лидерборду</Link>
       </div>
     </div>
   );

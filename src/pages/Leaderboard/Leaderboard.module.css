@@ -1,0 +1,20 @@
+.container {
+    width: 944px;
+    margin: 0 auto;
+    padding: 26px;
+    padding-top: 52px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 40px;
+  }
+
+.title {
+    font-family: StratosSkyeng;
+    font-size: 24px;
+    color: #fff;
+}
