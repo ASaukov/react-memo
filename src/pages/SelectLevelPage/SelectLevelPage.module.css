@@ -66,6 +66,7 @@
 
 .modeSelection {
   display: flex;
+  margin-bottom: 38px;
 }
 
 .nameMode {
@@ -104,4 +105,13 @@
 
 .checkbox:checked+.customCheckbox::before {
   transform: scale(1);
+}
+
+.toLeaderboard {
+  font-size: 18px;
+  color: #004980;
+  font-family: StratosSkyeng;
+  margin-top: 18px;
+  text-decoration-line: underline;
+  line-height: 32px;
 }
