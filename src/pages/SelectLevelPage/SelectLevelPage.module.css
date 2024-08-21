@@ -8,7 +8,7 @@
 
 .modal {
   width: 480px;
-  height: 459px;
+  height: 529px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
@@ -26,6 +26,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
+  width: 205px;
 }
 
 .levels {
@@ -69,6 +70,38 @@
 
 .nameMode {
   font-family: StratosSkyeng;
-  font-size: 20px;
-  color: #004980;
+  font-size: 24px;
+}
+
+.checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.customCheckbox {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #fff;
+}
+
+.customCheckbox::before {
+  content: '';
+  width: 22px;
+  height: 17px;
+  display: inline-block;
+  background-image: url(./Vector.png);
+  background-repeat: no-repeat;
+  margin-left: 4px;
+  transform: scale(0);
+}
+
+.checkbox:checked+.customCheckbox::before {
+  transform: scale(1);
 }

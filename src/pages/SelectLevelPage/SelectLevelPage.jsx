@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useEasyContext } from "../../context/useContext";
+import { Button } from "../../components/Button/Button";
 
 export function SelectLevelPage() {
   const {isEasyMode, setEasyMode} = useEasyContext();
@@ -27,9 +28,13 @@ export function SelectLevelPage() {
           </li>
         </ul>
         <div className={styles.modeSelection}>
-        <label className={styles.nameMode}>Легкий режим</label>
-        <input type="checkbox" checked={isEasyMode} onChange={e => setEasyMode(e.target.checked)}/>
+        <label className={styles.nameMode}>
+        <input className={styles.checkbox} type="checkbox" checked={isEasyMode} onChange={e => setEasyMode(e.target.checked)}/>
+        <span className={styles.customCheckbox}></span>
+        Легкий режим (3 жизни)
+        </label>
         </div>
+        <Button >Играть</Button>
       </div>
     </div>
   );
