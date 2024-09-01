@@ -42,6 +42,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const isHardMode = pairsCount === 3;
   const { isEasyMode } = useEasyContext();
   const [tries, setTries] = useState(3);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
@@ -243,6 +244,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            isHardMode = {isHardMode}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}

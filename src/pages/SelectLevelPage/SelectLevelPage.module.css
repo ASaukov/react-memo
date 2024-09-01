@@ -108,9 +108,28 @@
 
 .toLeaderboard {
   font-size: 18px;
-  color: #004980;
+  color: #565EEF;
   font-family: StratosSkyeng;
   margin-top: 18px;
   text-decoration-line: underline;
   line-height: 32px;
+}
+
+.levelButton {
+  display: none;
+
+  &[type="radio"]:checked + label {
+    text-shadow: 5px 5px 5px gray;
+    position: relative;
+    bottom: 3px;
+    right: 3px;
+    
+  }
+}
+
+.error {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: red;
+  font-family: StratosSkyeng;
 }
