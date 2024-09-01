@@ -13,27 +13,24 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
   const timeLeader = gameDurationMinutes * 60 + gameDurationSeconds;
 
   const [error, setError] = useState(null);
-  const [leaderData, setLeaderData] = useState({
-    name: "",
-    time: timeLeader,
-  });
+  const [leaderName, setLeaderName] = useState("");
 
   function handleInputChange(e) {
-    const { name, value } = e.target;
-
-    setLeaderData({
-      ...leaderData,
-      [name]: value,
-    });
+    setLeaderName(e.target.value);
   }
 
-  async function HandleNewLeader(e) {
-    e.preventDefault();
-    if (leaderData.name.trim() === "") {
+  async function HandleNewLeader() {
+    if (leaderName.trim() === "") {
       setError("Введите имя");
       return;
     }
-    await getLeader({leaderData});
+    await getLeader(leaderName, timeLeader);
+  }
+
+  function onKeyDown (e) {
+    if (e.key === "Enter") {
+      HandleNewLeader();
+    }
   }
 
   const title = isWon ? "Вы победили!" : "Вы проиграли!";
@@ -53,15 +50,17 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
           <input
             className={styles.placeholder}
             type="text"
-            value={leaderData.name}
+            value={leaderName.name}
             onChange={handleInputChange}
             name="name"
             placeholder="Пользователь"
+            onKeyDown={onKeyDown}
           />
         </div>
       )}
-      <p className={styles.error}>{error}</p>
-      <button onClick={HandleNewLeader}>Отправить</button>
+      {error && <p className={styles.error}>{error}</p>}
+
+      {/* <button onClick={HandleNewLeader}>Отправить</button> */}
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
