@@ -1,0 +1,67 @@
+.container {
+    width: 944px;
+    margin: 0 auto;
+    padding: 26px;
+    padding-top: 52px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 40px;
+  }
+
+.title {
+    font-family: StratosSkyeng;
+    font-size: 24px;
+    color: #fff;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contentLeaders,
+.contentTitle {
+    display: flex;
+    justify-content: space-between;
+    gap: 66px;
+    align-items: center;
+    border: 3px solid none;
+    background-color: #fff;
+    border-radius: 12px;
+    height: 64px;
+    font-size: 24px;
+    font-family: StratosSkyeng;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #999;
+}
+
+.contentLeaders {
+    color: black;
+}
+
+.positionTitle {
+width: 178px;
+/* color: #999; */
+}
+
+.nameTitle {
+    width: 324px;
+    /* color: #999; */
+}
+
+.reserveTitle {
+    width: 102px;
+    /* color: #999; */
+}
+
+.timeTitle {
+    width: 102px;
+    /* color: #999; */
+}
