@@ -11,7 +11,7 @@ export const getLeadersPage = async () => {
   return data.leaders;
 };
 
-export const getLeader = async (name, time) => {
+export const createLeader = async (name, time) => {
   const response = await fetch(URL, {
     method: "POST",
     body: JSON.stringify ({

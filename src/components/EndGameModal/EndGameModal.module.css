@@ -41,7 +41,7 @@
   height: 45px;
   left: 374px;
   top: 334px;
-  margin-bottom: 28px;
+  /* margin-bottom: 28px; */
   color: black;
   font-size: 24px;
   font-weight: 400;
@@ -58,7 +58,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 32px;
-
+  margin-top: 28px;
   margin-bottom: 10px;
 }
 
@@ -87,4 +87,25 @@
   font-size: 18px;
   color: red;
   font-family: StratosSkyeng;
+}
+
+.buttonLeader {
+  border-radius: 8px;
+  margin-top: 10px;
+  border: none;
+  width: 150px;
+  height: 30px;
+  font-family: StratosSkyeng;
+  font-size: 18px;
+  background: rgb(255, 255, 255);
+  color: rgba(80, 75, 75, 0.675);
+}
+
+.buttonLeader:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+.buttonLeader:disabled {
+  color: lightgrey;
 }

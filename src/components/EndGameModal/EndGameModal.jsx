@@ -5,7 +5,7 @@ import celebrationImageUrl from "./images/celebration.png";
 import { Link } from "react-router-dom";
 import { useEasyContext } from "../../context/useContext";
 import { useState } from "react";
-import { getLeader } from "../../api/Api";
+import { createLeader } from "../../api/Api";
 
 export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const { isEasyMode } = useEasyContext();
@@ -14,6 +14,11 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
 
   const [error, setError] = useState(null);
   const [leaderName, setLeaderName] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  function changeDisable() {
+    setIsDisabled(!isDisabled);
+  }
 
   function handleInputChange(e) {
     setLeaderName(e.target.value);
@@ -24,10 +29,11 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
       setError("Введите имя");
       return;
     }
-    await getLeader(leaderName, timeLeader);
+    await createLeader(leaderName, timeLeader);
+    changeDisable();
   }
 
-  function onKeyDown (e) {
+  function onKeyDown(e) {
     if (e.key === "Enter") {
       HandleNewLeader();
     }
@@ -60,7 +66,9 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
       )}
       {error && <p className={styles.error}>{error}</p>}
 
-      {/* <button onClick={HandleNewLeader}>Отправить</button> */}
+      <button className={styles.buttonLeader} onClick={HandleNewLeader} disabled={isDisabled}>
+        Добавить
+      </button>
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
