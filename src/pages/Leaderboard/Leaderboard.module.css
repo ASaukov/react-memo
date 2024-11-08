@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: end;
     margin-bottom: 40px;
-  }
+}
 
 .title {
     font-family: StratosSkyeng;
@@ -47,21 +47,78 @@
 }
 
 .positionTitle {
-width: 178px;
-/* color: #999; */
-}
-
-.nameTitle {
-    width: 324px;
+    width: 178px;
     /* color: #999; */
 }
 
-.reserveTitle {
-    width: 102px;
+.nameTitle {
+    width: 227px;
+    /* color: #999; */
+}
+
+.achievementsTitle {
+    width: 194px;
+    display: flex;
+    gap: 14px;
     /* color: #999; */
 }
 
 .timeTitle {
     width: 102px;
     /* color: #999; */
+}
+
+.iconBonus:hover + .boxTitle1 {
+    display: block;
+}
+
+.iconBonus {
+    width: 26px;
+    height: 26px;
+}
+
+.bonusTitle {
+    color: rgb(0, 73, 128);
+    font-family: "Inter" sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    padding: 15px 20px;
+    
+}
+
+.boxTitle1 {
+    min-width: 212px;
+    height: 78px;
+    background: #C2F5FF;
+    border-radius: 12px;
+    position: absolute;
+    bottom: 45px;
+    display: none;
+    position: absolute;
+}
+
+.boxTitle2 {
+    min-width: 174px;
+    height: 78px;
+    background: #C2F5FF;
+    border-radius: 12px;
+    position: absolute;
+    bottom: 45px;
+    display: none;
+    position: absolute;
+}
+
+.iconBonus:hover + .boxTitle2 {
+    display: block;
+}
+
+.arrow {
+    position: absolute;
+    left: 15px;
+    top: 75px
+}
+
+.boxBonus {
+    position: relative;
 }

@@ -4,6 +4,7 @@
   padding: 26px;
   padding-top: 22px;
   box-sizing: border-box;
+  
 }
 
 .cards {
@@ -23,19 +24,42 @@
   justify-content: center;
   align-items: center;
   background: #004980c0;
+  z-index: 2;
 }
 
 .header {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   align-items: end;
   margin-bottom: 35px;
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
 .timer {
   display: flex;
+  justify-content: space-between;
   align-items: end;
 
+  color: #fff;
+  font-family: StratosSkyeng;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 72px;
+}
+
+.previewTitle {
   color: #fff;
   font-family: StratosSkyeng;
   font-size: 64px;
@@ -50,6 +74,7 @@
   margin-top: 34px;
   margin-bottom: 10px;
 }
+
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
@@ -73,6 +98,69 @@
 
 .quantity {
   font-size: 16px;
-  font-family: StratosSkyeng;
+  font-family: "StratosSkyeng",sans-serif;
   color: white
+}
+
+.powerBlock {
+display: flex;
+flex-direction: column;
+align-items: center;
+position: relative;
+outline: none;
+background: none;
+border: none;
+z-index: 1;
+cursor: pointer;
+&:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.6);
+}
+}
+
+.powerBlock:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  background: none;
+  cursor: auto;
+}
+
+.powerBlock:disabled:hover .popupInfo {
+   display: none;
+}
+
+.powerImg:hover + .popupInfo {
+  display: block;
+}
+
+.popupInfo {
+width: 222px;
+height: 222px;
+border-radius: 12px;
+background-color: #C2F5FF;
+margin-top: 15px;
+display: none;
+position: absolute;
+top: 70px;
+}
+
+.title {
+  font-family: "inter", sans-serif;
+font-size: 18px;
+text-align: center;
+color: #004980;
+font-weight: 700;
+padding-top: 25px;
+padding-bottom: 10px;
+}
+
+.text {
+  font-family: "inter", sans-serif;
+  line-height: 24px;
+  font-size: 18px;
+  text-align: center;
+  color: #004980;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-bottom: 20px;
 }
