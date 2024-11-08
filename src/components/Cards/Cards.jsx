@@ -209,22 +209,18 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
-    if (status !== STATUS_PAUSED) {
-      const intervalId = setInterval(() => {
-        setTimer(time => ({
-          ...time,
-          seconds: time.seconds + 1,
-        }));
-      }, 1000);
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
+    const intervalId = setInterval(() => {
+      if (status !== STATUS_PAUSED) {
+        setTimer(getTimerValue(gameStartDate, gameEndDate));
+      }
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [gameStartDate, gameEndDate, status]);
 
   // Суперсила, открываем все карты на 5 сек.
   const epiphany = () => {
-    const currentTime = timer;
     setSuperPower(true);
     setStatus(STATUS_PAUSED);
     if (superPower === false) {
@@ -244,7 +240,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         });
       });
       setStatus(STATUS_IN_PROGRESS);
-      setTimer(currentTime);
+      setGameStartDate(new Date(gameStartDate.getTime() + 5000));
     }, 5000);
   };
 
