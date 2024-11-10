@@ -3,13 +3,13 @@ import { Button } from "../Button/Button";
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
 import { Link } from "react-router-dom";
-import { useEasyContext } from "../../context/useContext";
+// import { useEasyContext } from "../../context/useContext";
 import { useState } from "react";
 import { createLeader } from "../../api/Api";
 
-export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const { isEasyMode } = useEasyContext();
-  const isLeader = isWon && isHardMode && !isEasyMode;
+export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurationMinutes, onClick, achievements }) {
+  // const { isEasyMode } = useEasyContext();
+  const isLeader = isWon && isHardMode;
   const timeLeader = gameDurationMinutes * 60 + gameDurationSeconds;
 
   const [error, setError] = useState(null);
@@ -29,7 +29,7 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
       setError("Введите имя");
       return;
     }
-    await createLeader(leaderName, timeLeader);
+    await createLeader(leaderName, timeLeader, achievements);
     changeDisable();
   }
 
@@ -51,6 +51,7 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
       {!isLeader && <h2 className={styles.title}>{title}</h2>}
 
       {isLeader && (
+        <>
         <div className={styles.leaderText}>
           <h2 className={styles.title}>Вы попали на Лидерборд!</h2>
           <input
@@ -63,12 +64,14 @@ export function EndGameModal({ isWon, isHardMode, gameDurationSeconds, gameDurat
             onKeyDown={onKeyDown}
           />
         </div>
+        <button className={styles.buttonLeader} onClick={HandleNewLeader} disabled={isDisabled}>
+        Добавить
+      </button>
+      </>
       )}
       {error && <p className={styles.error}>{error}</p>}
 
-      <button className={styles.buttonLeader} onClick={HandleNewLeader} disabled={isDisabled}>
-        Добавить
-      </button>
+      
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}

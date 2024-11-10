@@ -14,6 +14,8 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+// Пауза
+const STATUS_PAUSED = "STATUS_PAUSED";
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -42,11 +44,23 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
-  const isHardMode = pairsCount === 3;
+  const isHardMode = pairsCount === 9;
   const { isEasyMode } = useEasyContext();
+  const [superPower, setSuperPower] = useState(false);
   const [tries, setTries] = useState(3);
+
+  let achievements = [];
+  if (STATUS_WON) {
+    if (!isEasyMode) {
+      achievements.push(1);
+    }
+    if (!superPower) {
+      achievements.push(2);
+    }
+  }
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
+  const [cardOpen, setCardOpen] = useState([]);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
@@ -73,6 +87,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setSuperPower(false);
     setTries(3);
     setGameStartDate(null);
     setGameEndDate(null);
@@ -117,6 +132,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // Открытые карты на игровом поле
     const openCards = nextCards.filter(card => card.open);
+    setCardOpen(openCards);
 
     // Ищем открытые карты, у которых нет пары среди других открытых
     const openCardsWithoutPair = openCards.filter(card => {
@@ -194,38 +210,78 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Обновляем значение таймера в интервале
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
+      if (status !== STATUS_PAUSED) {
+        setTimer(getTimerValue(gameStartDate, gameEndDate));
+      }
+    }, 1000);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate, gameEndDate]);
+  }, [gameStartDate, gameEndDate, status]);
+
+  // Суперсила, открываем все карты на 5 сек.
+  const epiphany = () => {
+    setSuperPower(true);
+    setStatus(STATUS_PAUSED);
+    if (superPower === false) {
+      cards.filter(card => {
+        if (card.open === false) {
+          card.open = true;
+        }
+      });
+    }
+    setTimeout(() => {
+      cards.filter(card => {
+        card.open = false;
+        cardOpen.filter(opencard => {
+          if (opencard.open === card.open && card.suit === opencard.suit && card.rank === opencard.rank) {
+            card.open = true;
+          }
+        });
+      });
+      setStatus(STATUS_IN_PROGRESS);
+      setGameStartDate(new Date(gameStartDate.getTime() + 5000));
+    }, 5000);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.timer}>
+        <div>
           {status === STATUS_PREVIEW ? (
-            <div>
+            <div className={styles.previewTitle}>
               <p className={styles.previewText}>Запоминайте пары!</p>
               <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
             </div>
           ) : (
-            <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
+            <div className={styles.headerContent}>
+              <div className={styles.timer}>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
               </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
+              <button disabled={superPower} onClick={epiphany} className={styles.powerBlock}>
+                <img className={styles.powerImg} src="../superPower1.svg" alt="power" />
+                <div className={styles.popupInfo}>
+                  <p className={styles.title}>Прозрение</p>
+                  <p className={styles.text}>
+                    На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
+                  </p>
+                </div>
+              </button>
+              <div className={styles.headerInfo}>
+                {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+                {isEasyMode ? <span className={styles.quantity}>Количество попыток: {tries}</span> : ""}
               </div>
-            </>
+            </div>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
-        {isEasyMode ? <span className={styles.quantity}>Количество попыток: {tries}</span> : ""}
       </div>
 
       <div className={styles.cards}>
@@ -244,10 +300,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
-            isHardMode = {isHardMode}
+            isHardMode={isHardMode}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            achievements={achievements}
           />
         </div>
       ) : null}
